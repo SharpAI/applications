@@ -74,7 +74,7 @@ services:
         aliases:
           - flower
   face_detector:
-    command: sh -c "python test.py && python worker.py worker --loglevel INFO -E -n detect -c 1 -Q detect"
+    command: sh -c "./start.sh"
     image: shareai/face_detector:x86
     container_name: "face_detector"
     env_file:
