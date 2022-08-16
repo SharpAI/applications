@@ -91,8 +91,8 @@ services:
         max-size: "10m"
         max-file: "10"
     volumes:
-      - ../device_id:/dev/ro_serialno
-      - ../group_id:/data/usr/com.deep.workai/cache/groupid.txt
+      - ~/.sharpai/device_id:/dev/ro_serialno
+      - ~/.sharpai/group_id:/data/usr/com.deep.workai/cache/groupid.txt
       - ./cache:/data/runtime/cache
       - ./images:/opt/nvr/detector/images
       - ./frames:/opt/nvr/videos/frames
@@ -126,8 +126,8 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ../device_id:/dev/ro_serialno
-      - ../group_id:/data/usr/com.deep.workai/cache/groupid.txt
+      - ~/.sharpai/device_id:/dev/ro_serialno
+      - ~/.sharpai/group_id:/data/usr/com.deep.workai/cache/groupid.txt
       - ./cache:/data/runtime/cache
       - ./data:/data/runtime/src/data
       - ./images:/opt/nvr/detector/images
@@ -150,6 +150,7 @@ services:
     privileged: true
     env_file:
       - .env
+      - ~/.sharpai/token.env
     environment:
       TIMEZONE_OFFSET: ${TIMEZONE_OFFSET}
       IMAGE_DIR: "/opt/nvr/detector/images"
@@ -161,10 +162,11 @@ services:
       - 3030:3000
     volumes:
       - ./videos:/opt/nvr/videos
-      - ../device_id:/dev/ro_serialno
-      - ../group_id:/data/usr/com.deep.workai/cache/groupid.txt
+      - ~/.sharpai/device_id:/dev/ro_serialno
+      - ~/.sharpai/group_id:/data/usr/com.deep.workai/cache/groupid.txt
       - ./images:/opt/nvr/detector/images
       - ./face_motion:/opt/nvr/detector/face_motion
       - ./face_cropped:/opt/nvr/detector/face_cropped
+      - /Users/simba/workspace/DeepCamera/src/camera/detector/deepeye.js:/opt/nvr/detector/deepeye.js
 networks:
   main:
