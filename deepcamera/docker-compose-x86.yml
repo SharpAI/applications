@@ -167,6 +167,5 @@ services:
       - ./images:/opt/nvr/detector/images
       - ./face_motion:/opt/nvr/detector/face_motion
       - ./face_cropped:/opt/nvr/detector/face_cropped
-      - /Users/simba/workspace/DeepCamera/src/camera/detector/deepeye.js:/opt/nvr/detector/deepeye.js
 networks:
   main:
