@@ -5,3 +5,7 @@ deepcamera/sql
 deepcamera/streams
 device_id
 group_id
+deepcamera/cache
+deepcamera/face_cropped
+deepcamera/frames
+deepcamera/videos
