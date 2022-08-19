@@ -110,7 +110,7 @@ services:
     runtime: nvidia
     environment:
       RUNTIME_BASEDIR: "/data/runtime/src/"
-      HAS_OPENCL: "false"
+      HAS_OPENCL: "true"
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
     restart: always
