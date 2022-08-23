@@ -82,9 +82,6 @@ services:
         max-size: "10m"
         max-file: "10"
     image: shareai/yolo_parking:l4t_r35.1.0
-    build:
-      context: ./src
-      dockerfile: Dockerfile.l4t_r35.1.0
     restart: always
     runtime: nvidia
     ports: 
