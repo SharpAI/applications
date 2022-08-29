@@ -58,6 +58,29 @@ services:
       - ./sql:/opt/nvr/conf
       - ./streams:/dev/shm/streams
       - ./images:/opt/nvr/detector/images
+  home-assistant:
+    container_name: "home-assistant"
+    image: homeassistant/home-assistant:2022.8
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - 8123:8123
+    networks:
+      main:
+        aliases:
+          - home-assistant
+    volumes:
+      - ./videos:/opt/nvr/videos
+      - ./sql:/opt/nvr/conf
+      - ./streams:/dev/shm/streams
+      - ./images:/opt/nvr/detector/images
+      - ~/.sharpai/ha/.storage:/config/.storage
+      - /Users/simba/workspace/AI-OS/applications/homeassistant/configuration.yaml:/config/configuration.yaml
+      - /Users/simba/workspace/DeepCamera/src/home-assistant/sharpai:/usr/src/homeassistant/homeassistant/components/sharpai
   flower:
     command: sh -c "flower --port=5555"
     image: shareai/flower:x86
