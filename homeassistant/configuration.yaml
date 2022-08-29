@@ -1,0 +1,21 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+ 
+ 
+# Text to speech
+tts:
+  - platform: google_translate
+
+# automation: !include automations.yaml
+# script: !include scripts.yaml
+# scene: !include scenes.yaml
+
+stream:
+  ll_hls: true
+  part_duration: 0.75
+  segment_duration: 6
+
+image_processing:
+  - platform: sharpai
+    source:
+      - entity_id: camera.192_168_68_108
