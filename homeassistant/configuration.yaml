@@ -18,4 +18,10 @@ stream:
 image_processing:
   - platform: sharpai
     source:
-      - entity_id: camera.192_168_68_108
+      - entity_id: camera.10_4_7_246
+    scan_interval: 1
+logger:
+  default: critical
+  logs:
+    homeassistant.components.image_processing: info
+    homeassistant.components.sharpai: info
