@@ -34,7 +34,7 @@ services:
           - mqttserver
   home-assistant:
     container_name: "home-assistant"
-    image: homeassistant/home-assistant:2022.8
+    image:  shareai/home-assiistant:2022.8
     restart: always
     logging:
       driver: json-file
