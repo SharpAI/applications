@@ -79,8 +79,6 @@ services:
       - ./streams:/dev/shm/streams
       - ./images:/opt/nvr/detector/images
       - ~/.sharpai/ha/.storage:/config/.storage
-      - ~/AI_OS/applications/homeassistant/configuration.yaml:/config/configuration.yaml
-      - ~/AI_OS/deepcamera/src/home-assistant/sharpai:/usr/src/homeassistant/homeassistant/components/sharpai
   flower:
     command: sh -c "flower --port=5555"
     image: shareai/flower:x86
