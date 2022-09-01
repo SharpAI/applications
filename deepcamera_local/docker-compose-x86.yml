@@ -188,8 +188,6 @@ services:
       - ./images:/opt/nvr/detector/images
       - ./face_motion:/opt/nvr/detector/face_motion
       - ./face_cropped:/opt/nvr/detector/face_cropped
-      - /home/simba/AI_OS/deepcamera/src/camera/detector/deepeye.js:/opt/nvr/detector/deepeye.js
-      - /home/simba/AI_OS/deepcamera/src/camera/detector/upload.js:/opt/nvr/detector/upload.js
   minio:
     image: shareai/minio:x86
     restart: always
