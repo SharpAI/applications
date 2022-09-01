@@ -1,7 +1,7 @@
 version: '2'
 services:
   redis:
-    image: shareai/redis:x86
+    image: shareai/redis:arm64v8_latest
     restart: always
     container_name: "redis"
     command: sh -c "rm -rf /data/*.rdb && redis-server --maxmemory 40mb --maxmemory-policy allkeys-lru --save \"\" --appendonly no --dbfilename \"\""
@@ -17,7 +17,7 @@ services:
         aliases:
           - redis
   broker:
-    image: shareai/broker:x86
+    image: shareai/broker:arm64v8_latest
     restart: always
     container_name: "broker"
     ports:
@@ -32,30 +32,35 @@ services:
       main:
         aliases:
           - mqttserver
-  home-assistant:
-    container_name: "home-assistant"
-    image:  shareai/home-assiistant:2022.8
+  camera:
+    container_name: "camera"
+    command: sh -c "if [ ! -f /opt/nvr/conf/conf.sqlite ]; then cp /opt/nvr/sql/shinobi.sample.sqlite /opt/nvr/conf/conf.sqlite -a ; fi && sleep 3 &&  (node /opt/nvr/cron.js &) && node /opt/nvr/camera.js"
+    image: shareai/nvr:nano_r32.6.1
     restart: always
+    privileged: true
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      TIMEZONE_OFFSET: ${TIMEZONE_OFFSET}
+      IMAGE_DIR: "/opt/nvr/detector/images"
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "10"
     ports:
-      - 8123:8123
+      - 8080:8080
     networks:
       main:
         aliases:
-          - home-assistant
+          - camera
     volumes:
       - ./videos:/opt/nvr/videos
       - ./sql:/opt/nvr/conf
       - ./streams:/dev/shm/streams
       - ./images:/opt/nvr/detector/images
-      - ~/.sharpai/ha/.storage:/config/.storage
   flower:
     command: sh -c "flower --port=5555"
-    image: shareai/flower:x86
+    image: shareai/flower:nano_r32.6.1
     restart: always
     ports:
       - 5555:5555
@@ -70,7 +75,7 @@ services:
           - flower
   face_detector:
     command: sh -c "./start.sh"
-    image: shareai/face_detector:x86
+    image: shareai/face_detector:nano_r32.6.1
     container_name: "face_detector"
     env_file:
       - .env
@@ -98,14 +103,19 @@ services:
           - facd_detector
   embedding:
     command: sh -c "./start_embedding_only.sh"
-    image: shareai/embedding:x86
+    image: shareai/embedding:nano_r32.6.1
     container_name: "embedding"
     env_file:
       - .env
+    runtime: nvidia
     environment:
       RUNTIME_BASEDIR: "/data/runtime/src/"
-      HAS_OPENCL: "false"
+      HAS_OPENCL: "true"
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
     restart: always
+    links:
+      - redis:redis
     depends_on:
       - "redis"
     logging:
@@ -130,16 +140,17 @@ services:
   detector_plugin:
     container_name: "detector_plugin"
     depends_on:
+      - "camera"
       - "flower"
       - "redis"
       - "broker"
-    command: sh -c "cd /opt/nvr/detector && node /opt/nvr/detector/index.js"
+    command: sh -c "export && cd /opt/nvr/detector && node /opt/nvr/detector/index.js"
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "10"
-    image: shareai/nvr:x86
+    image: shareai/nvr:nano_r32.6.1
     restart: always
     privileged: true
     env_file:
@@ -148,7 +159,6 @@ services:
     environment:
       TIMEZONE_OFFSET: ${TIMEZONE_OFFSET}
       IMAGE_DIR: "/opt/nvr/detector/images"
-      ENABLE_SHINOBI: "false"
     networks:
       main:
         aliases:
