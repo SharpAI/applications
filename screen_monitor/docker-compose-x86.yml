@@ -65,13 +65,7 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
-    #image: python:3.8
-    #image: huggingface/transformers-pytorch-cpu:4.18.0
     image: shareai/laptop_monitor:x86    
-    build:
-      context: ./src
-      dockerfile: Dockerfile.x86
-
     restart: always
     ports: 
       - 5901:5901
@@ -89,6 +83,3 @@ services:
       - ~/.sharpai/device_id:/dev/ro_serialno
       - ~/.sharpai/group_id:/data/usr/com.deep.workai/cache/groupid.txt
       - ./images:/opt/nvr/detector/images
-      - ./src/detector_cpu.py:/app/detector.py
-      - ./src/LabelStudioClient.py:/app/LabelStudioClient.py
-      - ./src/requirements.txt:/app/requirements.txt
