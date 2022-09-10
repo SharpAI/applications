@@ -72,14 +72,15 @@ services:
       - 8000:8080
       - 3000:3000
       - 9000:9000
+    depends_on:
+      - labelstudio
+      - milvus
+      - redis
     env_file:
-      - ~/.sharpai/token.env
       - .env
     environment:
       TIMEZONE_OFFSET: ${TIMEZONE_OFFSET}
       IMAGE_DIR: "/opt/nvr/detector/images"
     volumes:
-      - ./videos:/opt/nvr/videos
-      - ~/.sharpai/device_id:/dev/ro_serialno
-      - ~/.sharpai/group_id:/data/usr/com.deep.workai/cache/groupid.txt
-      - ./images:/opt/nvr/detector/images
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/videos:/opt/nvr/videos
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/images:/opt/nvr/detector/images
