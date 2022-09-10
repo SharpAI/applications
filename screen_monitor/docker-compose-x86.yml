@@ -12,6 +12,10 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+    networks:
+      main:
+        aliases:
+          - redis
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.0
@@ -27,6 +31,10 @@ services:
     image: heartexlabs/label-studio:v1.5.0
     ports:
       - "8080:8080"
+    networks:
+      main:
+        aliases:
+          - etcd
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/labelstudio-data:/label-studio/data
   minio:
@@ -43,6 +51,10 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      main:
+        aliases:
+          - minio
 
   milvus:
     container_name: milvus-standalone
@@ -58,6 +70,10 @@ services:
     depends_on:
       - "etcd"
       - "minio"
+    networks:
+      main:
+        aliases:
+          - milvus
   detector:
     container_name: "detector"
     logging:
@@ -72,6 +88,10 @@ services:
       - 8000:8080
       - 3000:3000
       - 9000:9000
+    networks:
+      main:
+        aliases:
+          - detector
     depends_on:
       - labelstudio
       - milvus
@@ -84,3 +104,5 @@ services:
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/videos:/opt/nvr/videos
       - ${DOCKER_VOLUME_DIRECTORY:-.}/images:/opt/nvr/detector/images
+networks:
+  main:
