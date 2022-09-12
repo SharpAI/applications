@@ -60,7 +60,7 @@ services:
           - minio
 
   milvus:
-    container_name: milvus-standalone
+    container_name: milvus
     image: milvusdb/milvus:v2.0.2
     command: ["milvus", "run", "standalone"]
     environment:
