@@ -1,10 +1,9 @@
 version: '3.5'
 services:
   redis:
-    image: shareai/redis:x86
+    image: redis:5.0
     restart: always
     container_name: "redis"
-    command: sh -c "redis-server --maxmemory 40mb --maxmemory-policy allkeys-lru --save \"\" --appendonly no --dbfilename \"\""
     ports:
       - 6379:6379
     logging:
