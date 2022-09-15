@@ -89,10 +89,6 @@ services:
         max-file: "10"
     ports:
       - 8123:8123
-    networks:
-      main:
-        aliases:
-          - home-assistant
     volumes:
       - ./volumes/images:/opt/nvr/detector/images
       - ~/.sharpai/ha/.storage:/config/.storage
