@@ -15,6 +15,7 @@ services:
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.0
+    restart: always
     environment:
       - ETCD_AUTO_COMPACTION_MODE=revision
       - ETCD_AUTO_COMPACTION_RETENTION=1000
@@ -25,6 +26,7 @@ services:
   labelstudio:
     container_name: labelstudio
     image: shareai/label-studio:1.5.0
+    restart: always
     ports:
       - "8080:8080"
     volumes:
@@ -32,6 +34,7 @@ services:
   minio:
     container_name: milvus-minio
     image: minio/minio:RELEASE.2020-12-03T00-03-10Z
+    restart: always
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
@@ -47,6 +50,7 @@ services:
   milvus:
     container_name: milvus-standalone
     image: shareai/milvus:arm64_latest
+    restart: always
     command: ["milvus", "run", "standalone"]
     environment:
       ETCD_ENDPOINTS: etcd:2379
