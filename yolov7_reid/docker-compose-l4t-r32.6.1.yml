@@ -97,4 +97,5 @@ services:
       - 8123:8123
     volumes:
       - ./volumes/images:/opt/nvr/detector/images
+      - ~/.sharpai/ha/config:/config
       - ~/.sharpai/ha/.storage:/config/.storage
